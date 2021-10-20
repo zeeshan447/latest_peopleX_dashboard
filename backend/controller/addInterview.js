@@ -85,9 +85,9 @@ const userInterviewList = async (req, res) => {
 ///
 const candidateInterviewList = async (req, res) => {
   try {
-    let myinterviewerList =
-      await pool.query(`select * from interviewer_status is2 join candidate_job_maping cjm on is2.candidate_job_maping_id = cjm.candidate_job_maping_id
-       where cjm.candidate_id =${req.params.candidate_id} `);
+    let myinterviewerList = await pool.query(`
+      select is2.*,array_agg(jsonb_build_object('user_id',u.user_name)) from interviewer_status is2 join candidate_job_maping cjm on is2.candidate_job_maping_id = cjm.candidate_job_maping_id join userinterview_maping um ON um.interviewer_status_id = is2 .interviewer_status_id join users u on u.user_id = um.user_id 
+             where cjm.candidate_id =${req.params.candidate_id} and is2.interviewer_status_id =${req.params.interviewer_status_id} group  by is2.interviewer_status_id `);
     console.log("users", myinterviewerList.rows);
     //pool.end()
     res.json({ statusCode: 200, interview: myinterviewerList.rows });
