@@ -6,13 +6,18 @@ import {
   AddResumeLabelDiv,
   ResumeFileDiv,
 } from "./resumepreview.style";
-const ResumePreview = () => {
+const ResumePreview = ({ cv }) => {
   const [pdfFile, setPdfFile] = useState(null);
   const [pdfFileError, setPdfFileError] = useState("");
 
   // for submit event
   const [viewPdf, setViewPdf] = useState(null);
 
+  useEffect(() => {
+    setPdfFile(cv.cv);
+
+    console.log("CV", cv.cv);
+  });
   // onchange event
   const fileType = ["application/pdf"];
   const handlePdfFileChange = (e) => {
@@ -63,7 +68,9 @@ const ResumePreview = () => {
           <form className="form-group" onSubmit={handlePdfFileSubmit}>
             <AddResumeLabelDiv>
               {pdfFile ? (
-                <AddResumeLabel for="addresume">Resume Selected</AddResumeLabel>
+                <AddResumeLabel for="addresume">
+                  <a href={pdfFile}>Resume Selected</a>
+                </AddResumeLabel>
               ) : (
                 <AddResumeLabel for="addresume" onChange={handlePdfFileChange}>
                   Add Resume{" "}

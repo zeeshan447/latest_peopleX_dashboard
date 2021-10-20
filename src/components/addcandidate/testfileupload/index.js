@@ -1,11 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
 import axios from "axios";
 
-function FileUpload({ uploadPdf }) {
+function FileUpload({ uploadPdf, url }) {
   const [file, setFile] = useState(""); // storing the uploaded file
   // storing the recived file from backend
   const [data, getFile] = useState({ name: "", path: "" });
   const [progress, setProgess] = useState(0); // progess bar
+  const [cvUrl, setCvUrl] = useState();
   const el = useRef(); // accesing input element
 
   const handleChange = (e) => {
@@ -14,7 +15,9 @@ function FileUpload({ uploadPdf }) {
     console.log(file);
     setFile(file); // storing file
   };
-
+  useEffect(() => {
+    url(cvUrl);
+  });
   const uploadFile = () => {
     const formData = new FormData();
     formData.append("cv", file);
@@ -32,6 +35,7 @@ function FileUpload({ uploadPdf }) {
       })
       .then((res) => {
         console.log("ajsdkjanskjdsa", res);
+        setCvUrl(res.data.url);
       })
       .catch((err) => console.log(err));
   };

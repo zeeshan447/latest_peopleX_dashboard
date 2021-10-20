@@ -54,6 +54,8 @@ const AddCandidateBody = ({
   candidateResume,
   candidateEmail,
   candidatePhone,
+  candidateJob,
+  candidateJobId,
 }) => {
   const [getCandidateName, setCandidateName] = useState();
   const [getCandidateCompany, setCandidateCompany] = useState();
@@ -62,33 +64,36 @@ const AddCandidateBody = ({
   const [getPdfFile, setPdfFile] = useState(null);
   const [getCandidateEmail, setCandidateEmail] = useState();
   const [getCandidatePhone, setCandidatePhone] = useState();
+  const [resumeUrl, setResumeUrl] = useState();
   let responseData = [];
   useEffect(() => {
     getData();
   });
   useEffect(() => {
-    console.log("pdfamsnakjsdfile ", getPdfFile);
+    //console.log("pdfamsnakjsdfile ", getPdfFile);
     candidateName(getCandidateName);
     candidateCompany(getCandidateCompany);
-    candidateResume(getPdfFile);
+    candidateResume(resumeUrl);
     candidateEmail(getCandidateEmail);
     candidatePhone(getCandidatePhone);
+    candidateJob(getJobTitle);
+    //console.log("Applied job", getJobName.job_title);
   });
-  function handleChange(value) {
+  function handleChange(value, key) {
     console.log(`selected ${value}`);
     setJobTitle(value);
+    candidateJobId(key.key);
   }
 
   const getData = async () => {
     await Axios.get("http://localhost:2500/job").then((response) => {
-      responseData = response.data.data.map((row, key) => ({
+      responseData = response?.data.candidateJob.map((row, key) => ({
         key: row.job_id,
         job_title: row.job_title,
       }));
     });
     setJobName(responseData);
   };
-  console.log("akjsnfdkjadnjdsa ", getJobName);
 
   const nameChangeHandler = (e) => {
     setCandidateName(e.target.value);
@@ -131,8 +136,12 @@ const AddCandidateBody = ({
                     0 || false
                 }
               >
-                {getJobName.map((data, key) => {
-                  return <Option value={data.key}>{data.job_title}</Option>;
+                {getJobName?.map((data, key) => {
+                  return (
+                    <Option value={data.job_title} key={data.key}>
+                      {data.job_title}
+                    </Option>
+                  );
                 })}
               </AddCandidateJobSelect>
             </AddCandidateJobTitleDiv>
@@ -141,7 +150,7 @@ const AddCandidateBody = ({
               <AddCandidateManualRefferral placeholder="Manualy Enter"></AddCandidateManualRefferral>
             </AddcandidateReferredDiv>
           </AddCandidateJobDiv>
-          <FileUpload uploadPdf={setPdfFile} />
+          <FileUpload uploadPdf={setPdfFile} url={setResumeUrl} />
         </AddCandidateDetailsDiv>
         <AddOpportunityDiv>
           <OpportunitiesTitleDiv>

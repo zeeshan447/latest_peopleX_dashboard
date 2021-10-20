@@ -163,7 +163,7 @@ const CandidateDetailsBody = ({
               </CandidateCreated>
             </AddcandidateReferredDiv>
           </AddCandidateJobDiv>
-          <ResumePreview></ResumePreview>
+          <ResumePreview cv={candidateDetails}></ResumePreview>
         </AddCandidateDetailsDiv>
         <AddOpportunityDiv>
           <OpportunitiesTitleDiv>

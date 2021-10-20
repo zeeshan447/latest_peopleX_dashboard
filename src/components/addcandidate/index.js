@@ -24,6 +24,8 @@ const AddCandidate = () => {
   const [getResume, setResume] = useState();
   const [getEmail, setEmail] = useState();
   const [getPhone, setPhone] = useState();
+  const [jobId, setJobId] = useState();
+  const [jobTitle, setJobTitle] = useState();
 
   const onFocusHandler = () => {
     setOnFocus(true);
@@ -41,25 +43,24 @@ const AddCandidate = () => {
     console.log("Name", getName);
     console.log("Company Name", getCompanyName);
     console.log("Resume", getResume);
-  });
+  }, []);
   const config = {
     headers: { "content-type": "multipart/form-data" },
   };
 
   const candidateAddHandler = async () => {
-    await Axios.post(
-      ADD_CANDIDATE,
-      {
-        candidate_name: getName,
-        prev_company: getCompanyName,
-        email: getEmail,
-        phone: getPhone,
-        cv: getResume,
-        notes: getNote,
-      },
-      config
-    ).then((response) => {
-      console.log("asdsadsadsadsadsad ", response.data);
+    debugger;
+    await Axios.post(ADD_CANDIDATE, {
+      candidate_name: getName,
+      prev_company: getCompanyName,
+      email: getEmail,
+      phone: getPhone,
+      notes: getNote,
+      cv: getResume,
+      applied_post: jobTitle,
+      job_id: jobId,
+    }).then((response) => {
+      console.log("asdsadsadsadsadsad ", response);
     });
   };
   const noteChangeHandler = (e) => {
@@ -101,6 +102,8 @@ const AddCandidate = () => {
           candidateResume={setResume}
           candidateEmail={setEmail}
           candidatePhone={setPhone}
+          candidateJob={setJobTitle}
+          candidateJobId={setJobId}
         />
       </AddCandidateTabsDiv>
     </React.Fragment>
